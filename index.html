@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Colby Oosthuizen — AI Systems & Automation</title>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#0f0f13;--surface:#1a1a24;--surface2:#23232f;--border:#2a2a3a;--text:#e4e4ec;--text2:#9898b0;--accent:#6c6cf0;--accent2:#00d4aa;--green:#00d4aa;--amber:#f0c040;--red:#f05060;--font:'Inter','SF Pro',-apple-system,sans-serif}
+    html{scroll-behavior:smooth}
+    body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.6}
+    .container{max-width:1100px;margin:0 auto;padding:0 24px}
+
+    /* nav */
+    nav{position:sticky;top:0;background:rgba(15,15,19,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);z-index:100}
+    nav .container{display:flex;align-items:center;justify-content:space-between;height:56px}
+    nav .logo{font-weight:700;font-size:1.1rem;color:var(--accent)}
+    nav ul{display:flex;gap:24px;list-style:none}
+    nav a{color:var(--text2);text-decoration:none;font-size:.9rem;transition:color .2s}
+    nav a:hover{color:var(--accent)}
+
+    /* hero */
+    .hero{padding:100px 0 60px;text-align:center}
+    .hero h1{font-size:clamp(2.2rem,5vw,3.2rem);font-weight:800;letter-spacing:-.02em;margin-bottom:16px}
+    .hero h1 span{color:var(--accent)}
+    .hero p{font-size:1.1rem;color:var(--text2);max-width:640px;margin:0 auto 32px}
+    .hero-badges{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:40px}
+    .badge{background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:6px 16px;font-size:.85rem;color:var(--text2)}
+    .hero-cta{display:inline-flex;align-items:center;gap:10px;background:var(--accent);color:#fff;padding:14px 32px;border-radius:10px;text-decoration:none;font-weight:600;font-size:.95rem;transition:opacity .2s}
+    .hero-cta:hover{opacity:.85}
+
+    /* sections */
+    section{padding:80px 0}
+    .section-label{font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);font-weight:600;margin-bottom:8px}
+    h2{font-size:1.8rem;font-weight:700;margin-bottom:16px;letter-spacing:-.01em}
+    h2 + p{color:var(--text2);max-width:600px;margin-bottom:40px}
+
+    /* project cards */
+    .card-grid{display:grid;gap:24px}
+    .card-grid.col2{grid-template-columns:1fr 1fr}
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:28px;transition:border-color .2s}
+    .card:hover{border-color:var(--accent)}
+    .card-icon{font-size:1.6rem;margin-bottom:12px}
+    .card h3{font-size:1.15rem;font-weight:700;margin-bottom:8px}
+    .card p{font-size:.9rem;color:var(--text2);margin-bottom:12px}
+    .card ul{list-style:none;font-size:.85rem;color:var(--text2)}
+    .card ul li{padding:4px 0;padding-left:16px;position:relative}
+    .card ul li::before{content:"▸";position:absolute;left:0;color:var(--accent)}
+
+    /* architecture diagram */
+    .arch-diagram{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:32px;margin:32px 0;overflow-x:auto}
+    .arch-diagram pre{font-size:.8rem;line-height:1.5;color:var(--text2)}
+
+    /* cost table */
+    .cost-table{width:100%;border-collapse:collapse;margin:24px 0;font-size:.9rem}
+    .cost-table th,.cost-table td{padding:12px 16px;text-align:left;border-bottom:1px solid var(--border)}
+    .cost-table th{font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;color:var(--text2);font-weight:600}
+    .cost-table td:last-child{text-align:right;font-variant-numeric:tabular-nums}
+    .cost-table tr:last-child td{border-bottom:none}
+    .cost-highlight{background:rgba(108,108,240,.08);border-radius:6px}
+    .cost-green{color:var(--green)}
+    .cost-red{color:var(--red)}
+
+    .route-flow{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin:28px 0;padding:20px;background:var(--surface2);border-radius:10px;font-size:.85rem}
+    .route-flow .node{background:var(--surface);border:1px solid var(--border);padding:8px 16px;border-radius:8px;color:var(--text2)}
+    .route-flow .node.cheap{border-color:var(--green);color:var(--green)}
+    .route-flow .node.medium{border-color:var(--amber);color:var(--amber)}
+    .route-flow .node.expensive{border-color:var(--accent);color:var(--accent)}
+    .route-flow .arrow{color:var(--text2);font-size:1.2rem}
+
+    /* screenshot */
+    .screenshot-wrap{background:var(--surface2);border-radius:10px;padding:12px;margin:16px 0}
+    .screenshot-wrap img{width:100%;border-radius:6px;display:block}
+    .screenshot-wrap .caption{font-size:.8rem;color:var(--text2);text-align:center;padding:8px 0 0}
+
+    /* skills */
+    .skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+    .skill-tag{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:.85rem;color:var(--text2)}
+    .skill-tag strong{color:var(--text);display:block;margin-bottom:4px;font-size:.9rem}
+
+    /* contact */
+    .contact-links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:24px}
+    .contact-links a{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);padding:12px 24px;border-radius:10px;text-decoration:none;color:var(--text);font-size:.9rem;transition:border-color .2s}
+    .contact-links a:hover{border-color:var(--accent)}
+
+    /* footer */
+    footer{text-align:center;padding:32px 0;border-top:1px solid var(--border);color:var(--text2);font-size:.85rem}
+
+    /* responsive */
+    @media(max-width:768px){
+      .card-grid.col2{grid-template-columns:1fr}
+      nav ul{display:none}
+      .hero{padding:60px 0 40px}
+      section{padding:48px 0}
+      .cost-table{font-size:.8rem}
+      .cost-table th,.cost-table td{padding:8px 10px}
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <span class="logo">CO</span>
+    <ul>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#architecture">Architecture</a></li>
+      <li><a href="#cost">Cost Strategy</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-badges">
+      <span class="badge">🤖 AI Systems</span>
+      <span class="badge">⚡ Automation</span>
+      <span class="badge">🧠 Multi-Agent Architectures</span>
+      <span class="badge">🔧 Full-Stack</span>
+    </div>
+    <h1>I build <span>autonomous AI systems</span> that do real work.</h1>
+    <p>Multi-agent councils running 24/7. Automated job application bots. Cost-optimised model routing across DeepSeek, Claude, and local LLMs. All built from scratch, all shipping to production.</p>
+    <a class="hero-cta" href="#projects">See what I've built →</a>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="container">
+    <div class="section-label">Projects</div>
+    <h2>Real systems, production deployments</h2>
+    <p>Not tutorials. Not coursework. These are live, autonomous systems running on cloud infrastructure.</p>
+
+    <div class="card-grid col2">
+
+      <div class="card">
+        <div class="card-icon">🧠</div>
+        <h3>Jarvis — AI Chief of Staff</h3>
+        <p>A 7-agent autonomous council running 24/7 via WhatsApp on a cloud VPS. Routes requests to specialised sub-agents (Researcher, Coder, Writer, Analyst, Planner, Tennis Ops, Uni Work) with a Critic review layer. Integrates with an Obsidian vault that auto-syncs to GitHub.</p>
+        <ul>
+          <li>7 specialised sub-agents + orchestrator + critic</li>
+          <li>WhatsApp control surface, zero-latency responses</li>
+          <li>GitHub-backed second brain vault architecture</li>
+          <li>Automatic model selection (Haiku for simple, Sonnet for complex)</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">🔍</div>
+        <h3>Seek Auto-Apply Bot</h3>
+        <p>Full browser automation using Playwright that scrapes Seek for matching jobs and submits applications — including resume upload, tailored cover letters, and multi-field form completion. Built to bypass Cloudflare bot detection while running on a local machine.</p>
+        <ul>
+          <li>Playwright browser automation with real user simulation</li>
+          <li>Smart job filtering by keyword, salary, type, location</li>
+          <li>Dry-run mode for safe testing, rate-limit aware</li>
+          <li>Applied-job tracking with dedup across runs</li>
+        </ul>
+        <div class="screenshot-wrap">
+          <img src="screenshots/seek-login.png" alt="Seek automation — automated login flow" loading="lazy">
+          <div class="caption">Browser automation navigating Seek's passwordless login flow</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">💸</div>
+        <h3>Multi-Model Cost Engine</h3>
+        <p>Intelligent model routing that slashes API costs by ~40x. Routine tasks go to DeepSeek V4 Flash ($0.07/M tok). Complex reasoning uses DeepSeek Reasoner or Claude Sonnet as a fallback. Swarm agents each get the model appropriate to their role, not a one-size-fits-all.</p>
+        <ul>
+          <li>~40x cost reduction vs using Claude for everything</li>
+          <li>Automatic fallback chain: DeepSeek → Claude</li>
+          <li>Per-agent model selection in swarm architectures</li>
+          <li>Sub-$0.01 per typical interaction</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">🔐</div>
+        <h3>Local Model Infrastructure</h3>
+        <p>Researched and architected a self-hosted model pipeline using Ollama, Odysseus, and vLLM for fully offline, zero-cost inference. Capable of running small models on a Raspberry Pi for background tasks, with upgrade paths to GPU-powered local instances.</p>
+        <ul>
+          <li>Ollama / Odysseus integration for local LLMs</li>
+          <li>Raspberry Pi deployment for always-on background agents</li>
+          <li>Offline-capable, zero API cost, no telemetry</li>
+          <li>OpenAI-compatible API layer for drop-in replacement</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ARCHITECTURE -->
+<section id="architecture" style="background:var(--surface)">
+  <div class="container">
+    <div class="section-label">Architecture</div>
+    <h2>How the Jarvis council works</h2>
+    <p>Every component is designed for autonomy, fault tolerance, and cost efficiency.</p>
+
+    <div class="arch-diagram">
+<pre>
+┌─────────────────────────────────────────────────────┐
+│                    WhatsApp                          │
+│              (user sends a message)                  │
+└──────────────────┬──────────────────────────────────┘
+                   │
+                   ▼
+┌─────────────────────────────────────────────────────┐
+│              OpenClaw (Jarvis Intake)                │
+│   Classifies request → selects model → routes       │
+│   Model: Haiku (simple) / Sonnet (complex)          │
+└──────────────────┬──────────────────────────────────┘
+                   │
+                   ▼
+┌─────────────────────────────────────────────────────┐
+│              Council Queen (Orchestrator)            │
+│   Writes task brief → delegates → collects output   │
+└──┬───────┬───────┬───────┬───────┬───────┬───────┬──┘
+   │       │       │       │       │       │       │
+   ▼       ▼       ▼       ▼       ▼       ▼       ▼
+┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐
+│Rsch │ │Coder│ │Writr│ │Anlys│ │Planr│ │Tnns │ │ Uni │
+│     │ │     │ │     │ │     │ │     │ │Ops  │ │Work │
+└─────┘ └─────┘ └─────┘ └─────┘ └─────┘ └─────┘ └─────┘
+   │       │       │       │       │       │       │
+   └───────┴───────┴───────┼───────┴───────┴───────┘
+                           │
+                           ▼
+                ┌─────────────────────┐
+                │   Critic (Review)   │
+                │   Sanity-checks     │
+                │   all output        │
+                └─────────────────────┘
+                           │
+                           ▼
+                ┌─────────────────────┐
+                │  Obsidian Vault     │
+                │  → GitHub Auto-Sync │
+                └─────────────────────┘
+                           │
+                           ▼
+                ┌─────────────────────┐
+                │   WhatsApp Reply    │
+                └─────────────────────┘
+</pre>
+    </div>
+
+    <div class="screenshot-wrap" style="max-width:500px;margin:0 auto">
+      <img src="screenshots/seek-form.png" alt="Seek automation — form filling in progress" loading="lazy">
+      <div class="caption">Seek bot automating job application form submission via Playwright</div>
+    </div>
+  </div>
+</section>
+
+<!-- COST STRATEGY -->
+<section id="cost">
+  <div class="container">
+    <div class="section-label">Cost Optimisation</div>
+    <h2>Why I don't burn money on AI</h2>
+    <p>Most people use one model for everything. I route each task to the cheapest model that can handle it — saving ~40x on API costs while maintaining quality where it matters.</p>
+
+    <table class="cost-table">
+      <thead>
+        <tr>
+          <th>Model</th>
+          <th>Cost per 1M input tokens</th>
+          <th>Best for</th>
+          <th>Cost vs Claude</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>DeepSeek V4 Flash</td>
+          <td class="cost-green">$0.07</td>
+          <td>High-volume, routine tasks, heartbeats</td>
+          <td class="cost-green">~43× cheaper</td>
+        </tr>
+        <tr>
+          <td>DeepSeek V4 Pro</td>
+          <td class="cost-green">$0.26</td>
+          <td>Medium-complexity agent work</td>
+          <td class="cost-green">~12× cheaper</td>
+        </tr>
+        <tr>
+          <td>DeepSeek Reasoner</td>
+          <td class="cost-green">$0.55</td>
+          <td>Deep reasoning, analysis agents</td>
+          <td class="cost-green">~5× cheaper</td>
+        </tr>
+        <tr>
+          <td>Claude Sonnet</td>
+          <td class="cost-red">$3.00</td>
+          <td>Final synthesis, critical judgment</td>
+          <td>—</td>
+        </tr>
+        <tr class="cost-highlight">
+          <td><strong>Ollama (Local)</strong></td>
+          <td class="cost-green"><strong>$0.00</strong></td>
+          <td>Background agents, offline tasks</td>
+          <td class="cost-green"><strong>Free</strong></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 style="margin-top:32px;font-size:1.1rem">How routing works</h3>
+    <div class="route-flow">
+      <span class="node cheap">Routine task</span>
+      <span class="arrow">→</span>
+      <span class="node cheap">DeepSeek Flash ($0.07)</span>
+      <span style="color:var(--text2);font-size:.8rem">or</span>
+      <span class="node medium">Complex task</span>
+      <span class="arrow">→</span>
+      <span class="node medium">DeepSeek Reasoner ($0.55)</span>
+      <span style="color:var(--text2);font-size:.8rem">or</span>
+      <span class="node expensive">Critical work</span>
+      <span class="arrow">→</span>
+      <span class="node expensive">Claude Sonnet ($3.00)</span>
+    </div>
+
+    <p style="color:var(--text2);font-size:.9rem;text-align:center;margin-top:16px">
+      Fallback chain: DeepSeek → Claude. If DeepSeek is down, Claude takes over automatically. No gaps.
+    </p>
+
+    <h3 style="margin-top:40px;font-size:1.1rem">Swarm example — 6-agent code review</h3>
+    <p style="color:var(--text2);font-size:.9rem">
+      Instead of running all 6 agents on Claude (costing ~$3.00 each), a mixed swarm routes:
+      4 reviewers → DeepSeek Reasoner ($0.55),
+      1 researcher → DeepSeek Flash ($0.07),
+      Final synthesis → Claude Sonnet ($3.00).
+      <strong style="color:var(--text)">Total: ~$5.27 vs $21.00</strong> — same quality, 75% cheaper.
+    </p>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" style="background:var(--surface)">
+  <div class="container">
+    <div class="section-label">Skills</div>
+    <h2>Technical toolkit</h2>
+    <p>What I use to build these systems.</p>
+
+    <div class="skills-grid">
+      <div class="skill-tag">
+        <strong>AI & Automation</strong>
+        Multi-agent architectures · AI agent deployment · Workflow automation · Autonomous systems
+      </div>
+      <div class="skill-tag">
+        <strong>Model Platforms</strong>
+        DeepSeek API · Anthropic Claude · OpenAI · Ollama · vLLM · OpenClaw
+      </div>
+      <div class="skill-tag">
+        <strong>Infrastructure</strong>
+        VPS deployment · Linux · systemd · Docker · Docker Compose · GitHub Actions
+      </div>
+      <div class="skill-tag">
+        <strong>Automation</strong>
+        Playwright · Browser automation · Seek API · Email automation · Cron/scheduled tasks
+      </div>
+      <div class="skill-tag">
+        <strong>Development</strong>
+        Node.js · Python · React · SQL · REST APIs · Git · Full-stack web
+      </div>
+      <div class="skill-tag">
+        <strong>Knowledge Systems</strong>
+        Obsidian · Second brain architecture · Multi-agent councils · AI-in-the-loop workflows
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container" style="text-align:center">
+    <div class="section-label">Contact</div>
+    <h2>Let's talk</h2>
+    <p style="max-width:480px;margin:0 auto">I'm available for remote AI development, automation consulting, and systems architecture work.</p>
+
+    <div class="contact-links">
+      <a href="mailto:colbyoosthuizen@gmail.com">✉️ colbyoosthuizen@gmail.com</a>
+      <a href="https://github.com/ColbyOosthuizen" target="_blank">🐙 GitHub /ColbyOosthuizen</a>
+      <a href="https://www.linkedin.com/in/colby-oosthuizen-428284279/" target="_blank">💼 LinkedIn</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>© 2026 Colby Oosthuizen. Built with ☕ and API keys.</p>
+  </div>
+</footer>
+
+</body>
+</html>
